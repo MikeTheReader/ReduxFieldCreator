@@ -4,11 +4,9 @@ import { connect } from 'react-redux';
 class StateViewer extends Component {
     render() {
         return (
-            <div>
-                <pre>
-                    {this.props.state}
-                </pre>
-            </div>
+            <pre>
+                {this.props.state}
+            </pre>
         );
     }
 }
