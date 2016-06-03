@@ -1,6 +1,25 @@
 
 export default function(state = null, action) {
-    return [
+    if (!state) {
+        return defaultData;
+    }
+
+    switch(action.type) {
+        case 'FIELD_SAVED':
+            var matchingIndex = state.findIndex((field) => {
+                return field.id == action.payload.id;
+            });
+            return state.slice(0, matchingIndex).concat(action.payload).concat(state.slice(matchingIndex + 1));
+        case 'ADD_NEW_FIELD':
+            var idList = state.map((field) => { return field.id});
+            var maxID = Math.max.apply(null, idList);
+            return state.slice().concat({id: maxID + 1});
+        default:
+            return state;
+    }
+}
+
+const defaultData = [
         {
             id: 1,
             name: 'Field One',
@@ -26,5 +45,5 @@ export default function(state = null, action) {
             attribute: 'field_four',
             description: 'Description of Field Four'
         }
-    ];
-}
+    ]
+;

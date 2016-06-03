@@ -13,6 +13,18 @@ export function changeFieldForm(fieldName, fieldValue) {
         type: 'FORM_FIELD_CHANGED',
         payload: payload
     }
+}
 
+export function saveField(field) {
+    return {
+        type: 'FIELD_SAVED',
+        payload: field
+    }
+}
+
+export function addNewField() {
+    return {
+        type: 'ADD_NEW_FIELD'
+    }
 }
 

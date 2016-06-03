@@ -6,8 +6,9 @@ export default function(state = null, action) {
             return action.payload;
         case 'FORM_FIELD_CHANGED':
             return update(state, {$merge: fieldChangeHandler(action.payload)});
-        case 'SAVE_FORM':
-            return state;
+        case 'FIELD_SAVED':
+            // List will handle the update, here we just want to remove it from the selected form
+            return null;
         default:
             return state;
     }

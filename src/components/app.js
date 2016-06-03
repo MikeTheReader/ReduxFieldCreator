@@ -8,7 +8,7 @@ export default function App() {
     return (
         <div className="container">
             <h2>Field Editor</h2>
-            <div className="col-md-5">
+            <div className="col-md-6">
                 <div className="panel panel-primary">
                     <div className="panel-heading">Field List</div>
                     <div className="panel-body">
@@ -22,7 +22,7 @@ export default function App() {
                     </div>
                 </div>
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
                 <div className="panel panel-info">
                     <div className="panel-heading">Application State</div>
                     <div className="panel-body">

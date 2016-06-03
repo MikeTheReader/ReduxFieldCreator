@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { selectField } from '../actions/index'
+import { selectField, addNewField } from '../actions/index'
 
 class FieldList extends Component {
 
     renderList() {
         return this.props.fields.map((field) => {
+            var fieldName = field.name || '< New Field >';
             return (
                 <li
                     key={field.id}
                     onClick={() => this.props.selectField(field)}
                     className="list-group-item">
-                    {field.name}
+                    { fieldName }
                 </li>
             );
         });
@@ -22,9 +23,14 @@ class FieldList extends Component {
     render() {
         return (
             <div>
-                <ul className="list-group">
-                    {this.renderList()}
-                </ul>
+                <div>
+                    <ul className="list-group">
+                        {this.renderList()}
+                    </ul>
+                </div>
+                <div>
+                    <input className="btn btn-primary" value="Add Field" onClick={() => this.props.addNewField()}/>
+                </div>
             </div>
         );
     }
@@ -37,7 +43,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ selectField: selectField }, dispatch)
+    return bindActionCreators({ selectField, addNewField }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FieldList)

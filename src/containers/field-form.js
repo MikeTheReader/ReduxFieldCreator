@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { changeFieldForm } from '../actions/index'
+import { saveField } from '../actions/index'
 
 
 class FieldForm extends Component {
@@ -23,25 +24,43 @@ class FieldForm extends Component {
 
         return (
             <div>
-                <label>Field Name</label>
-                <input value={this.props.activeField.name}
-                       onChange={this.inputHandler('name')}
-                       type="text"
-                       className="form-control"
-                       placeholder="Field Name" />
-                <label>Machine Readable Name</label>
-                <input value={this.props.activeField.attribute}
-                       type="text"
-                       className="form-control"
-                       readOnly="true"
-                       placeholder="Machine Readable Name" />
-                <label>Description</label>
-                <input value={this.props.activeField.description}
-                       onChange={this.inputHandler('description')}
-                       type="text"
-                       className="form-control"
-                       placeholder="Description" />
-                <input className="btn btn-primary pull-right" type="Submit" value="Submit" onClick={this.props.saveForm} />
+                <div className="form-group">
+                    <label>Field Name</label>
+                    <input value={this.props.activeField.name}
+                           onChange={this.inputHandler('name')}
+                           type="text"
+                           className="form-control"
+                           placeholder="Field Name" />
+                </div>
+                <div className="form-group">
+                    <label>Machine Readable Name</label>
+                    <input value={this.props.activeField.attribute}
+                           type="text"
+                           className="form-control"
+                           readOnly="true"
+                           placeholder="Machine Readable Name" />
+                </div>
+                <div className="form-group">
+                    <label>Description</label>
+                    <input value={this.props.activeField.description}
+                           onChange={this.inputHandler('description')}
+                           type="text"
+                           className="form-control"
+                           placeholder="Description" />
+                </div>
+                <div className="form-group">
+                    <label>Type</label>
+                    <select value={this.props.activeField.type}
+                            className="form-control"
+                            onChange={this.inputHandler('type')}>
+                        <option>Text</option>
+                        <option>Number</option>
+                        <option>Date</option>
+                    </select>
+                </div>
+                <div>
+                    <input className="btn btn-primary" value="Submit" onClick={() => {this.props.saveField(this.props.activeField)}} />
+                </div>
             </div>
         )
     }
@@ -54,7 +73,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ changeFieldForm: changeFieldForm }, dispatch)
+    return bindActionCreators({ changeFieldForm, saveField }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FieldForm)
