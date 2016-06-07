@@ -6,6 +6,10 @@ import { selectField, addNewField } from '../actions/index'
 
 class FieldList extends Component {
 
+    createNewField() {
+        console.log(this.props.addNewField());
+    }
+
     renderList() {
         return this.props.fields.map((field) => {
             var fieldName = field.name || '< New Field >';
@@ -29,7 +33,7 @@ class FieldList extends Component {
                     </ul>
                 </div>
                 <div>
-                    <input className="btn btn-primary" value="Add Field" onClick={() => this.props.addNewField()}/>
+                    <input className="btn btn-primary" value="Add Field" onClick={this.createNewField.bind(this)}/>
                 </div>
             </div>
         );

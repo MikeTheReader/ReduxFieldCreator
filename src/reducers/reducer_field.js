@@ -1,3 +1,5 @@
+import { SAVE_FIELD, ADD_NEW_FIELD, SELECT_FIELD } from '../actions/index';
+
 
 export default function(state = null, action) {
     if (!state) {
@@ -5,15 +7,15 @@ export default function(state = null, action) {
     }
 
     switch(action.type) {
-        case 'FIELD_SAVED':
+        case SAVE_FIELD:
             var matchingIndex = state.findIndex((field) => {
                 return field.id == action.payload.id;
             });
             return state.slice(0, matchingIndex).concat(action.payload).concat(state.slice(matchingIndex + 1));
-        case 'ADD_NEW_FIELD':
-            var idList = state.map((field) => { return field.id});
-            var maxID = Math.max.apply(null, idList);
-            return state.slice().concat({id: maxID + 1});
+        case ADD_NEW_FIELD:
+            var maxID = Math.max.apply(null, state.map((field) => { return field.id }));
+            var newField = {id: maxID + 1};
+            return state.slice().concat(newField);
         default:
             return state;
     }

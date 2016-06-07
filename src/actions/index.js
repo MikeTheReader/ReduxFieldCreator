@@ -1,30 +1,26 @@
 
+export const SELECT_FIELD = 'SELECT_FIELD';
+export const SAVE_FIELD = 'SAVE_FIELD';
+export const ADD_NEW_FIELD = 'ADD_NEW_FIELD'
+
+
 export function selectField(field) {
     return {
-        type: 'FIELD_SELECTED',
+        type: SELECT_FIELD,
         payload: field
     };
 }
 
-export function changeFieldForm(fieldName, fieldValue) {
-    var payload = {};
-    payload[fieldName] = fieldValue;
-    return {
-        type: 'FORM_FIELD_CHANGED',
-        payload: payload
-    }
-}
-
 export function saveField(field) {
     return {
-        type: 'FIELD_SAVED',
+        type: SAVE_FIELD,
         payload: field
     }
 }
 
 export function addNewField() {
     return {
-        type: 'ADD_NEW_FIELD'
+        type: ADD_NEW_FIELD
     }
 }
 

@@ -8,7 +8,13 @@ import reducers from './reducers';
 
 require('./style/index.css');
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const loggerMiddleware = store => next => action => {
+  console.log('dispatching', action.type);
+  let result = next(action);
+  return result
+};
+
+const createStoreWithMiddleware = applyMiddleware(loggerMiddleware)(createStore);
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
