@@ -7,6 +7,7 @@ import { selectField, addNewField } from '../actions/index'
 class FieldList extends Component {
 
     createNewField() {
+        this.props.addNewField();
     }
 
     renderList() {
