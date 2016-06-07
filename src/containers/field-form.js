@@ -7,11 +7,85 @@ import { reduxForm } from 'redux-form';
 import TagsInput from 'react-tagsinput';
 
 import { saveField } from '../actions/index';
+import _ from 'lodash'
 
 export const FIELD_FORM_NAME = 'FieldForm';
-const formFields = ['id', 'name', 'attribute', 'description', 'type', 'low', 'high', 'tags', 'defaultValue', 'allowAdditionalOptions'];
+const FORM_FIELDS = {
+    id: {
+        label: 'ID',
+        type: 'hidden',
+        defaultVisible: true
+    },
+    name: {
+        label: 'Field Name',
+        type: 'text',
+        required: true,
+        defaultVisible: true
+    },
+    attribute: {
+        label: 'Machine Readable Name',
+        type: 'text',
+        required: true,
+        defaultVisible: true
+    },
+    description: {
+        label: 'Description',
+        type: 'text',
+        required: true,
+        defaultVisible: true
+    },
+    type: {
+        label: 'Type',
+        type: 'select',
+        options: {
+            text: 'Text',
+            number: 'Number',
+            date: 'Date'
+        },
+        defaultVisible: true
+    },
+    options: {
+        label: 'Valid Options',
+        type: 'TagsInput',
+        defaultVisible: true
+    },
+    allowAdditionalOptions: {
+        label: 'Allow user to add additional options',
+        type: 'checkbox',
+        defaultVisible: true
+    },
+    defaultValue: {
+        label: 'Default Value',
+        type: 'text',
+        defaultVisible: true
+    },
+    readOnly: {
+        label: 'Read-Only (user cannot modify value)',
+        type: 'checkbox',
+        defaultVisible: true
+    },
+    low: {
+        label: 'Low Value',
+        type: 'text',
+        defaultVisible: false
+    },
+    high: {
+        label: 'High Value',
+        type: 'text',
+        defaultVisible: false
+    }
+};
 
 class FieldForm extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+        _.forOwn(FORM_FIELDS, (fieldProperties, fieldName) => {
+            this.state[fieldName] = fieldProperties.defaultVisible;
+        });
+    }
+
 
     onSubmit(props) {
         this.props.saveField(props);
@@ -28,21 +102,90 @@ class FieldForm extends Component {
         return '';
     }
 
+    renderFormFields() {
+        let fullJSX = []
+        _.forOwn(FORM_FIELDS, (field, key) => {
+            let reduxFormField = this.props.fields[key];
+            if (!reduxFormField.turnedOff) {
+                fullJSX.push(this.renderSingleField(key, field, reduxFormField));
+            }
+        });
+        return fullJSX;
+    }
+
+    handleTagsChange(reduxField, tags, changed, changedIndexes) {
+        reduxField.onChange(tags);
+    }
+
+    fieldChanged(event, reduxField) {
+        reduxField.onChange(event)
+    }
+
+    renderSingleField(fieldName, fieldProperties, reduxField) {
+        switch (fieldProperties.type) {
+            case 'hidden':
+                return <input key={reduxField.name} type={fieldProperties.type} {...reduxField} />
+            case 'checkbox':
+                return (
+                    <div className="form-group" key={reduxField.name}>
+                        <input type={fieldProperties.type} {...reduxField} />
+                        <label>&nbsp;{fieldProperties.label}</label>
+                    </div>
+                );
+            case 'select':
+                return (
+                    <div className="form-group" key={reduxField.name}>
+                        <label>{fieldProperties.label}</label>
+                        <select className="form-control" {...reduxField} onChange={(event) => this.fieldChanged(event, reduxField)}>
+                            {this.renderOptions(fieldProperties)}
+                        </select>
+                    </div>
+                );
+            case 'TagsInput':
+                return (
+                    <div className="form-group" key={reduxField.name}>
+                        <label>{fieldProperties.label}</label>
+                        <TagsInput {...reduxField}
+                            onChange={(tags, changed, changedIndexes) => this.handleTagsChange(reduxField, tags, changed, changedIndexes)}
+                            onBlur={() => {}}
+                        />
+                    </div>
+                );
+            default:
+                return (
+                    <div className={"form-group" + this.additionalClasses(reduxField)} key={reduxField.name}>
+                        <label>{fieldProperties.label}</label>
+                        {this.fieldIsInError(reduxField) ? <div className="error-message">{reduxField.error}</div> : ''}
+                        <input type={fieldProperties.type}
+                               className={"form-control"}
+                               placeholder={fieldProperties.label}
+                            {...reduxField}/>
+                    </div>
+                );
+        }
+    }
+
+    renderOptions(fieldProperties) {
+
+        let fullJSX = [];
+        _.forOwn(fieldProperties.options, (value, key) => {
+            fullJSX.push(
+                <option key={key} value={key}>{value}</option>
+            )
+        });
+        return fullJSX;
+    }
+
     render() {
-        const {
-            fields: {
-                name,
-                attribute,
-                description,
-                type,
-                low,
-                high,
-                tags,
-                defaultValue,
-                allowAdditionalOptions
-            },
-            handleSubmit
-        } = this.props;
+        const {fields, handleSubmit} = this.props;
+
+        if (fields.type.value === 'text') {
+            fields.low.turnedOff = true;
+            fields.high.turnedOff = true;
+        } else {
+            fields.low.turnedOff = false;
+            fields.high.turnedOff = false;
+        }
 
         if (!this.props.activeField) {
             return (
@@ -52,74 +195,7 @@ class FieldForm extends Component {
 
         return (
             <form onSubmit={ handleSubmit(this.onSubmit.bind(this)) }>
-                <div className={"form-group" + this.additionalClasses(name)}>
-                    <label>Field Name</label>
-                    {this.fieldIsInError(name) ? <div className="error-message">{name.error}</div> : ''}
-                    <input type="text"
-                           className={"form-control"}
-                           placeholder="Field Name"
-                           {...name} />
-                </div>
-                <div className="form-group">
-                    <label>Machine Readable Name</label>
-                    <input type="text"
-                           className="form-control"
-                           readOnly="true"
-                           placeholder="Machine Readable Name"
-                        {...attribute} />
-                </div>
-                <div className={"form-group" + this.additionalClasses(description)}>
-                    <label>Description</label>
-                    {description.touched && description.error && <div className="error-message">{description.error}</div>}
-                    <input type="text"
-                           className="form-control"
-                           placeholder="Description"
-                        {...description} />
-
-                </div>
-                <div className="form-group">
-                    <label>Type</label>
-                    <select className="form-control" {...type}>
-                        <option>Text</option>
-                        <option>Number</option>
-                        <option>Date</option>
-                    </select>
-                </div>
-
-                <div className="form-group">
-                    <label>Valid options</label>
-                    <TagsInput {...tags}/>
-                </div>
-                <div className="form-group">
-                    <input type="checkbox" className="formControl" {...allowAdditionalOptions} />
-                    <label>&nbsp;Allow user to create additional options</label>
-                </div>
-                <div className="form-group">
-                    <label>Default Value</label>
-                    <input type="text"
-                           className="form-control"
-                           placeholder="Default Value"
-                        {...defaultValue} />
-                </div>
-                <div className="form-group clearfix">
-                    <label>Range</label>
-                    <div>
-                        <div className="col-md-6">
-                            <label>Low</label>
-                            <input type="text"
-                                   className="form-control"
-                                   placeholder="Low Value"
-                                   {...low}/>
-                        </div>
-                        <div className="col-md-6">
-                            <label>High</label>
-                            <input type="text"
-                                   className="form-control"
-                                   placeholder="High Value"
-                                {...high} />
-                        </div>
-                    </div>
-                </div>
+                {this.renderFormFields()}
                 <div className="clearfix">
                     <button type="Submit" className="btn btn-primary">Submit</button>
                 </div>
@@ -131,13 +207,13 @@ class FieldForm extends Component {
 
 function validate(values) {
     const errors = {};
-    if (!values.name) {
-        errors.name = 'Please enter a name for the field';
-    }
 
-    if (!values.description) {
-        errors.description = 'Please enter a description for the field';
-    }
+
+    _.forOwn(FORM_FIELDS, function(fieldProperties, fieldName) {
+        if (fieldProperties.required && !values[fieldName]) {
+            errors[fieldName] = `Please enter a ${fieldProperties.label}`;
+        }
+    });
 
     return errors;
 }
@@ -145,7 +221,7 @@ function validate(values) {
 
 export default reduxForm({
     form: FIELD_FORM_NAME,
-    fields: formFields,
+    fields: _.keys(FORM_FIELDS),
     validate
 },
 state => ({

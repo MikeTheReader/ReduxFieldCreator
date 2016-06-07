@@ -1,8 +1,9 @@
 import React from 'react';
 
-import StateViewer from '../containers/state-viewer'
-import FieldList from '../containers/field-list'
-import FieldForm from '../containers/field-form'
+import StateViewer from '../containers/state-viewer';
+import FieldList from '../containers/field-list';
+import FieldForm from '../containers/field-form';
+import SampleForm from '../containers/sample-form';
 
 export default function App() {
     return (
@@ -23,7 +24,13 @@ export default function App() {
                 </div>
             </div>
             <div className="col-md-6">
-                <div className="panel panel-info">
+                <div className="panel panel-success">
+                    <div className="panel-heading">Sample Form</div>
+                    <div className="panel-body">
+                        <SampleForm />
+                    </div>
+                </div>
+                <div className="panel panel-warning">
                     <div className="panel-heading">Application State</div>
                     <div className="panel-body">
                         <StateViewer />

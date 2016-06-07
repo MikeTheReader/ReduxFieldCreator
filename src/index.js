@@ -9,7 +9,7 @@ import reducers from './reducers';
 require('./style/index.css');
 
 const loggerMiddleware = store => next => action => {
-  console.log('dispatching', action.type);
+  console.log(`Dispatching action: ${action.type}`);
   let result = next(action);
   return result
 };

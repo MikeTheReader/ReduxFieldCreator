@@ -5,7 +5,7 @@ export default formReducer.normalize({
     FieldForm: {
         attribute: normalizeAttribute,
         type: value => value ? value : 'text',
-        tags: normalizeTags
+        options: normalizeTags
     }
 });
 
@@ -20,9 +20,5 @@ function calculateAttribute(name) {
 }
 
 function normalizeTags(value, previousValue, allValues, previousAllValues) {
-    console.log('normalizeTags', arguments);
-    if (!value || value === '') {
-        return [];
-    }
-    return value;
+    return value ? value : [];
 }
