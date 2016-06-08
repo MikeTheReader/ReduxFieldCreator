@@ -10,6 +10,8 @@ just having a sample one. To best mimic the project I'm eventually going to add 
 into a hybrid React/Redux/Django application. It supports hot loading from Django (though an additional node
 server must be run).
 
+Thanks go to Owais Lone, for giving me something to base much of this off of: <http://owaislone.org/blog/webpack-plus-reactjs-and-django/>
+
 ### Installing
 
 > **NOTE**: You'll most likely want to create a virtualenv to use for your installation. The remainder of these
@@ -32,6 +34,31 @@ pip install -r requirements.txt
 ```
 npm install
 ```
+
+### Starting things ups
+
+#### Start Django
+
+To start Django, open a terminal:
+
+```
+cd field_project
+python manage.py runserver
+```
+
+#### Start node server
+
+To enable hotloading, a node server must be running to serve the hotly generated files. The start this, open a
+separate terminal:
+
+```
+npm start
+```
+
+### Viewing the project
+
+You should now be able to go to <http://localhost:8000/fields> and see the main page. Any changes made to the .js
+files will be hot reloaded without restarting Django or Node.
 
 
 
