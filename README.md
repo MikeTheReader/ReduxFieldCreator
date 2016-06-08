@@ -69,7 +69,7 @@ npm start
 You should now be able to go to <http://localhost:8000/fields> and see the main page. Any changes made to the .js
 files will be hot reloaded without restarting Django or Node.
 
-### Running in Production
+## Running in Production
 
 To run in production:
 
