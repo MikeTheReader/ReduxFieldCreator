@@ -1,25 +1,28 @@
 var path = require('path');
 var webpack = require('webpack');
+var BundleTracker = require('webpack-bundle-tracker');
+
 
 module.exports = {
     // or devtool: 'eval' to debug issues with compiled output:
     devtool: 'cheap-module-eval-source-map',
     entry: [
         // necessary for hot reloading with IE:
-        'eventsource-polyfill',
+        //'eventsource-polyfill',
         // listen to code updates emitted by hot middleware:
-        'webpack-hot-middleware/client',
+        //'webpack-hot-middleware/client',
         // your code:
         './src'
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'fields_project/dist'),
         filename: 'bundle.js',
-        publicPath: '/dist/'
+        publicPath: '/static/'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new BundleTracker({filename: './webpack-stats.json'}),
     ],
     resolve: {
         extensions: ['', '.js', '.jsx']
