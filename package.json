@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "description": "A project for learning redux / react while creating a field list creator.",
     "scripts": {
-        "start": "node server.js"
+        "start": "node server.js",
+        "lint": "eslint src"
     },
     "repository": {
         "type": "git",
@@ -12,15 +13,14 @@
     "keywords": [
         "react",
         "reactjs",
-        "boilerplate",
+        "django",
         "hot",
         "reload",
         "hmr",
         "live",
         "edit",
         "webpack",
-        "babel",
-        "react-transform"
+        "babel"
     ],
     "author": "Michael Lundin <mlundin617@gmail.com> (http://github.com/MikeTheReader)",
     "license": "CC0-1.0",

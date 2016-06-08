@@ -153,11 +153,11 @@ class FieldForm extends Component {
                 );
             default:
                 return (
-                    <div className={"form-group" + this.additionalClasses(reduxField)} key={reduxField.name}>
+                    <div className={'form-group' + this.additionalClasses(reduxField)} key={reduxField.name}>
                         <label>{fieldProperties.label}</label>
                         {this.fieldIsInError(reduxField) ? <div className="error-message">{reduxField.error}</div> : ''}
                         <input type={fieldProperties.type}
-                               className={"form-control"}
+                               className={'form-control'}
                                placeholder={fieldProperties.label}
                             {...reduxField}/>
                     </div>
@@ -219,13 +219,15 @@ function validate(values) {
 }
 
 
-export default reduxForm({
-    form: FIELD_FORM_NAME,
-    fields: _.keys(FORM_FIELDS),
-    validate
-},
-state => ({
-    initialValues: state.activeField,
-    activeField: state.activeField
-}),
-{ saveField: saveField })(FieldForm);
+export default reduxForm(
+    {
+        form: FIELD_FORM_NAME,
+        fields: _.keys(FORM_FIELDS),
+        validate
+    },
+    (state) => ({
+        initialValues: state.activeField,
+        activeField: state.activeField
+    }),
+    { saveField }
+)(FieldForm);
