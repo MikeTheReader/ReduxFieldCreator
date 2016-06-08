@@ -57,7 +57,7 @@ python manage.py runserver
 
 #### Start node server
 
-To enable hotloading, a node server must be running to serve the hotly generated files. The start this, open a
+To enable hot reloading, a node server must be running to serve the hotly generated files. The start this, open a
 separate terminal:
 
 ```
@@ -68,6 +68,19 @@ npm start
 
 You should now be able to go to <http://localhost:8000/fields> and see the main page. Any changes made to the .js
 files will be hot reloaded without restarting Django or Node.
+
+### Running in Production
+
+To run in production:
+
+* In `field_project/redux_field_creator/settings.py`, set `DEBUG = True`
+* Run `npm run build:prod`
+* Restart your Django server with
+
+> **Note**: There is no need to run a node server when running in production. There is no hot reloading occurring
+and files are served statically.
+
+
 
 
 

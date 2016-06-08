@@ -25,7 +25,7 @@ SECRET_KEY = '+1l3s!ks2h7qqe!m!l3*(6(t#!=14u9(fgii4gnwb8$@+z$q8$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -125,11 +125,18 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'dist'),
 )
 
-print (BASE_DIR)
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': '/',
         'STATS_FILE': os.path.join(BASE_DIR, '../webpack-stats.json'),
     }
 }
+
+if not DEBUG:
+    WEBPACK_LOADER.update({
+        'DEFAULT': {
+            'BUNDLE_DIR_NAME': '/',
+            'STATS_FILE': os.path.join(BASE_DIR, '../webpack-stats-prod.json')
+        }
+    })
 
