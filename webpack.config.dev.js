@@ -1,43 +1,42 @@
-var path = require('path');
-var webpack = require('webpack');
-var BundleTracker = require('webpack-bundle-tracker');
+var path = require("path")
+var webpack = require('webpack')
+var BundleTracker = require('webpack-bundle-tracker')
 
+var config = require('./webpack.base.config.js');
 
-module.exports = {
-    // or devtool: 'eval' to debug issues with compiled output:
-    devtool: 'cheap-module-eval-source-map',
-    entry: [
-        // necessary for hot reloading with IE:
-        //'eventsource-polyfill',
-        // listen to code updates emitted by hot middleware:
-        //'webpack-hot-middleware/client',
-        // your code:
-        './src'
-    ],
-    output: {
-        path: path.join(__dirname, 'fields_project/dist'),
-        filename: 'bundle.js',
-        publicPath: '/static/'
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-        new BundleTracker({filename: './webpack-stats.json'}),
-    ],
-    resolve: {
-        extensions: ['', '.js', '.jsx']
-    },
-    module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                loaders: ['babel'],
-                include: path.join(__dirname, 'src')
-            },
-            {
-                test: /\.css$/,
-                loader: "style-loader!css-loader"
-            }
-        ]
+config.devtool = 'cheap-module-eval-source-map';
+
+// Use webpack dev server
+config.entry = [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    './src'
+];
+
+// override django's STATIC_URL for webpack bundles
+config.output.publicPath = 'http://localhost:3000/fields_project/dist';
+
+// Add HotModuleReplacementPlugin and BundleTracker plugins
+config.plugins = config.plugins.concat([
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new BundleTracker({filename: './webpack-stats.json'}),
+])
+
+// Add a loader for JSX files with react-hot enabled
+config.module.loaders.push(
+    {
+        test: /\.js$/,
+        loaders: ['react-hot', 'babel'],
+        include: path.join(__dirname, 'src')
     }
-};
+);
+
+module.exports = config
+
+
+
+
+
+
+
