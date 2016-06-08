@@ -1,9 +1,18 @@
-### Redux / React Learning Project
+## Redux / React Learning Project
 
 This is a project I am using while learning Redux / React. The idea is a form that allows the user to
-add multiple fields and their definitions.
+add multiple fields and their definitions. This is very much a learning tool, and I'm doing my best to 
+make it understandable to others and be a tool for learning.
 
-### Django support for hot reloading
+Thanks to Stephen Grider for his Udemy course, <https://www.udemy.com/react-redux/learn/v4/> which this
+project draws from, greatly.
+
+#### Notes
+
+The **Application State** window in the application displays the actual state from all reducers live 
+as it happens. The console also reports every action that happens.
+
+#### Django support for hot reloading
 
 As I worked on this project, I realized I was jumping through coding hoops to mimic a REST API, rather than
 just having a sample one. To best mimic the project I'm eventually going to add this to, I've turned this project
@@ -12,7 +21,7 @@ server must be run).
 
 Thanks go to Owais Lone, for giving me something to base much of this off of: <http://owaislone.org/blog/webpack-plus-reactjs-and-django/>
 
-### Installing
+## Installing
 
 > **NOTE**: You'll most likely want to create a virtualenv to use for your installation. The remainder of these
 > instructions assume that's what you're doing, and that any python commands are performed within that virtualenv.
@@ -35,7 +44,7 @@ pip install -r requirements.txt
 npm install
 ```
 
-### Starting things ups
+## Starting things ups
 
 #### Start Django
 
