@@ -80,6 +80,10 @@ To run in production:
 > **Note**: There is no need to run a node server when running in production. There is no hot reloading occurring
 and files are served statically.
 
+## Miscellaneous
+
+To run the JS code through a react linter, run `npm run lint`
+
 
 
 
