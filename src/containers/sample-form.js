@@ -3,11 +3,20 @@ import { connect } from 'react-redux';
 
 export default class SampleForm extends Component {
 
-
     createOptionList(field) {
         return field.options.map((option) => {
-           return <option key={option} value={option}>{option}</option>;
+           return <option key={option}>{option}</option>;
         });
+    }
+
+    renderSingleFormField(formField) {
+        let field = {};
+        _.keys(formField).forEach((key) => {
+            if (formField[key]) {
+                field[key] = formField[key].value;
+            }
+        });
+        return this.renderSingleField(field);
     }
 
     renderSingleField(field) {
@@ -28,23 +37,12 @@ export default class SampleForm extends Component {
             }
         }
         return (
-            <div className="form-group">
+            <div className="form-group" key={`input-${field.name}`}>
                 <label>{field.name}</label>
                 {inputField}
             </div>
         )
     }
-
-    renderSingleFormField(formField) {
-        let field = {};
-        _.keys(formField).forEach((key, index) => {
-            if (formField[key]) {
-                field[key] = formField[key].value;
-            }
-        });
-        return this.renderSingleField(field);
-    }
-
 
     renderFields() {
         let fieldMap = {}
