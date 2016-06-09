@@ -49,17 +49,17 @@ const FORM_FIELDS = {
         type: 'TagsInput',
         defaultVisible: true
     },
-    allowAdditionalOptions: {
+    allow_additional_options: {
         label: 'Allow user to add additional options',
         type: 'checkbox',
         defaultVisible: true
     },
-    defaultValue: {
+    default_value: {
         label: 'Default Value',
         type: 'text',
         defaultVisible: true
     },
-    readOnly: {
+    read_only: {
         label: 'Read-Only (user cannot modify value)',
         type: 'checkbox',
         defaultVisible: true
@@ -197,7 +197,7 @@ class FieldForm extends Component {
             <form onSubmit={ handleSubmit(this.onSubmit.bind(this)) }>
                 {this.renderFormFields()}
                 <div className="clearfix">
-                    <button type="Submit" className="btn btn-primary">Submit</button>
+                    <button type="Submit" className="btn btn-primary pull-right">Save</button>
                 </div>
             </form>
         )

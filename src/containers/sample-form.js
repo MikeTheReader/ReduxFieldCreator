@@ -45,6 +45,10 @@ export default class SampleForm extends Component {
     }
 
     renderFields() {
+        if (this.props.fields.length == 0) {
+            return (<div>No fields defined.</div>)
+        }
+
         let fieldMap = {}
         this.props.fields.forEach((field) => {
             fieldMap[field.id] = this.renderSingleField(field);
