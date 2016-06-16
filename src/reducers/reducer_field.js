@@ -1,4 +1,4 @@
-import { SAVE_FIELD, ADD_NEW_FIELD, SELECT_FIELD, FETCH_FIELDS } from '../actions/index';
+import { SAVE_FIELD, ADD_NEW_FIELD, FETCH_FIELDS } from '../actions/index';
 
 
 export default function(state = [], action) {
@@ -11,7 +11,7 @@ export default function(state = [], action) {
             });
             return state.slice(0, matchingIndex).concat(action.payload.data).concat(state.slice(matchingIndex + 1));
         case ADD_NEW_FIELD:
-            return state.slice().concat(action.payload.data);
+            return [...state, action.payload.data];
         default:
             return state;
     }

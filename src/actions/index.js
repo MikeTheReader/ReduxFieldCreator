@@ -6,9 +6,14 @@ export const ADD_NEW_FIELD = 'ADD_NEW_FIELD';
 export const FETCH_FIELDS = 'FETCH_FIELDS';
 export const DELETE_FIELD = 'DELETE_FIELD';
 
-const API_URL = 'http://localhost:8000/fields/fields';
+const API_URL = '//localhost:8000/fields/fields';
 
-
+/**
+ * Any of the actions defined here with an axios request will go through the redux-promise middleware that is
+ * initialized in the index.js file. This middleware detects any actions that have promises in their payloads. It then
+ * "hijacks" the action, waits for the promise to be fulfilled and then lets the action go, replacing the pomise
+ * with the response from the request.
+ **/
 export function fetchFields() {
     const request = axios.get(`${API_URL}`);
     return {
@@ -20,7 +25,7 @@ export function fetchFields() {
 export function selectField(field) {
     return {
         type: SELECT_FIELD,
-        payload: field
+        payload: {data: field}  // Formatted this way to correspond to other actions
     };
 }
 

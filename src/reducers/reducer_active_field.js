@@ -1,11 +1,10 @@
 import {SELECT_FIELD, SAVE_FIELD, ADD_NEW_FIELD, DELETE_FIELD} from '../actions/index';
 
-var update = require('react-addons-update');
 
 export default function(state = null, action) {
     switch (action.type) {
         case SELECT_FIELD:
-            return action.payload;
+            return action.payload.data;
         case ADD_NEW_FIELD:
             return action.payload.data;
         case SAVE_FIELD:
