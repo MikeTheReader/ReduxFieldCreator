@@ -5,7 +5,7 @@ export default class SampleForm extends Component {
 
     createOptionList(field) {
         return field.options.map((option) => {
-           return <option key={option}>{option}</option>;
+            return <option key={option} selected={option == field.default_value}>{option}</option>;
         });
     }
 
@@ -20,17 +20,17 @@ export default class SampleForm extends Component {
     }
 
     renderSingleField(field) {
-        let inputField = <input type={field.type} className="form-control" placeholder={field.description}/>;
+        let inputField = <input type={field.type} readOnly={field.read_only} defaultValue={field.default_value} className="form-control" placeholder={field.description}/>;
         if (field.options && field.options.length > 0) {
             if (field.allowAdditionalOptions) {
                 inputField = (
-                    <select className="form-control">
+                    <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
                         {this.createOptionList(field)}
                     </select>
                 );
             } else {
                 inputField = (
-                    <select className="form-control">
+                    <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
                         {this.createOptionList(field)}
                     </select>
                 );

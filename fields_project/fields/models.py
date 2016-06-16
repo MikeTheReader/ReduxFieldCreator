@@ -19,3 +19,13 @@ class Field(models.Model):
     read_only = models.BooleanField(default=False)
 
 
+class FieldOptions(models.Model):
+    field = models.ForeignKey(Field, related_name="options", null=True, blank=True)
+    option = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return '{0}'.format(self.option)
+
+
+
+

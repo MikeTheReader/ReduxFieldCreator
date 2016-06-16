@@ -12,9 +12,7 @@ require('./style/index.css');
 const loggerMiddleware = (store) => (next) => (action) => {
     // Don't log the ones that have promises as payloads (those with a 'then' function)
     // Otherwise, you'll end up with duplicate logs, one for the original action, and one for the fulfilled promise
-    if (!action.payload.then) {
-        console.log(`Dispatching action: ${action.type}`);
-    }
+    console.log(`Dispatching action: ${action.type}`);
     let result = next(action);
     return result
 };
