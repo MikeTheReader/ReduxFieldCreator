@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from jsonfield import JSONField
 
 TYPES = [
     ('text', 'text'),
@@ -17,6 +18,8 @@ class Field(models.Model):
     allow_additional_options = models.BooleanField(default=False)
     default_value = models.CharField(null=True, max_length=255)
     read_only = models.BooleanField(default=False)
+    low = models.TextField(default=None, null=True, blank=True)
+    high = models.TextField(default=None, null=True, blank=True)
 
 
 class FieldOptions(models.Model):
