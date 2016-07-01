@@ -103,7 +103,7 @@ class FieldForm extends Component {
     }
 
     renderFormFields() {
-        let fullJSX = []
+        let fullJSX = [];
         _.forOwn(FORM_FIELDS, (field, key) => {
             let reduxFormField = this.props.fields[key];
             if (!reduxFormField.turnedOff) {
@@ -152,11 +152,16 @@ class FieldForm extends Component {
                     </div>
                 );
             default:
+                let type = fieldProperties.type;
+
+                if (reduxField.name === 'high' || reduxField.name === 'low' || reduxField.name === 'default_value') {
+                    type = this.props.fields['type'].value;
+                }
                 return (
                     <div className={'form-group' + this.additionalClasses(reduxField)} key={reduxField.name}>
                         <label>{fieldProperties.label}</label>
                         {this.fieldIsInError(reduxField) ? <div className="error-message">{reduxField.error}</div> : ''}
-                        <input type={fieldProperties.type}
+                        <input type={type}
                                className={'form-control'}
                                placeholder={fieldProperties.label}
                             {...reduxField}/>

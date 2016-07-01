@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { selectField, addNewField, fetchFields, deleteField } from '../actions/index'
+
 export default class SampleForm extends Component {
+
+    componentWillMount() {
+        this.props.fetchFields();
+    }
+
+    deleteField(field) {
+        this.props.deleteField(field).then(() => {
+            this.props.fetchFields();
+        });
+    }
 
     createOptionList(field) {
         return field.options.map((option) => {
@@ -20,7 +33,22 @@ export default class SampleForm extends Component {
     }
 
     renderSingleField(field) {
-        let inputField = <input type={field.type} readOnly={field.read_only} defaultValue={field.default_value} className="form-control" placeholder={field.description}/>;
+
+        let addlProps = {};
+        if (field.low) {
+            addlProps.min = field.low;
+        }
+        if (field.high) {
+            addlProps.max = field.high;
+        }
+
+        let inputField = <input type={field.type}
+                                readOnly={field.read_only}
+                                defaultValue={field.default_value}
+                                className="form-control"
+                                placeholder={field.description}
+                                {...addlProps}/>;
+
         if (field.options && field.options.length > 0) {
             if (field.allowAdditionalOptions) {
                 inputField = (
@@ -36,10 +64,19 @@ export default class SampleForm extends Component {
                 );
             }
         }
+        let classes = 'field-container';
+        if (this.props.activeField && this.props.activeField.id === field.id) {
+            classes += ' selected';
+        }
         return (
-            <div className="form-group" key={`input-${field.name}`}>
-                <label>{field.name}</label>
-                {inputField}
+
+            <div className={classes} onClick={() => this.props.selectField(field)}>
+                <button className="btn btn-xs btn-danger pull-right"
+                        onClick={() => this.deleteField(field)}>Delete</button>
+                <div className="form-group" key={`input-${field.name}`}>
+                    <label>{field.name}</label>
+                    {inputField}
+                </div>
             </div>
         )
     }
@@ -68,6 +105,10 @@ export default class SampleForm extends Component {
         return (
             <div>
                 {this.renderFields()}
+                <button className="btn btn-primary pull-right add-new-field-button"
+                        onClick={() => this.props.addNewField()}>
+                    Add New Field
+                </button>
             </div>
         );
     }
@@ -80,5 +121,13 @@ function mapStateToProps(state) {
         form: state.form
     };
 }
-export default connect(mapStateToProps, null)(SampleForm)
+
+/**
+ * This function maps action creators to this.props so that they can be used to initiate actions.
+ */
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({selectField, addNewField, fetchFields, deleteField}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SampleForm)
 
