@@ -104,6 +104,7 @@ export default class SampleForm extends Component {
     render() {
         return (
             <div>
+                <div>Click on a field below to modify it, or click Add New Field to add a new one.</div>
                 {this.renderFields()}
                 <button className="btn btn-primary pull-right add-new-field-button"
                         onClick={() => this.props.addNewField()}>
