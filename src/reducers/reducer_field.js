@@ -9,6 +9,9 @@ export default function(state = [], action) {
             var matchingIndex = state.findIndex((field) => {
                 return field.id == action.payload.data.id;
             });
+            if (matchingIndex === -1) {
+                matchingIndex = state.length;
+            }
             return state.slice(0, matchingIndex).concat(action.payload.data).concat(state.slice(matchingIndex + 1));
         case ADD_NEW_FIELD:
             return [...state, action.payload.data];
