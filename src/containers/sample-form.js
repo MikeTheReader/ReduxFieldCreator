@@ -3,41 +3,15 @@ import { connect } from 'react-redux';
 
 export default class SampleForm extends Component {
 
-
     createOptionList(field) {
         return field.options.map((option) => {
-           return <option key={option} value={option}>{option}</option>;
+            return <option key={option} selected={option == field.default_value}>{option}</option>;
         });
-    }
-
-    renderSingleField(field) {
-        let inputField = <input type={field.type} className="form-control" placeholder={field.description}/>;
-        if (field.options && field.options.length > 0) {
-            if (field.allowAdditionalOptions) {
-                inputField = (
-                    <select className="form-control">
-                        {this.createOptionList(field)}
-                    </select>
-                );
-            } else {
-                inputField = (
-                    <select className="form-control">
-                        {this.createOptionList(field)}
-                    </select>
-                );
-            }
-        }
-        return (
-            <div className="form-group">
-                <label>{field.name}</label>
-                {inputField}
-            </div>
-        )
     }
 
     renderSingleFormField(formField) {
         let field = {};
-        _.keys(formField).forEach((key, index) => {
+        _.keys(formField).forEach((key) => {
             if (formField[key]) {
                 field[key] = formField[key].value;
             }
@@ -45,8 +19,38 @@ export default class SampleForm extends Component {
         return this.renderSingleField(field);
     }
 
+    renderSingleField(field) {
+        let inputField = <input type={field.type} readOnly={field.read_only} defaultValue={field.default_value} className="form-control" placeholder={field.description}/>;
+        if (field.options && field.options.length > 0) {
+            if (field.allowAdditionalOptions) {
+                inputField = (
+                    <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
+                        {this.createOptionList(field)}
+                    </select>
+                );
+            } else {
+                inputField = (
+                    <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
+                        {this.createOptionList(field)}
+                    </select>
+                );
+            }
+        }
+        return (
+            <div className="form-group" key={`input-${field.name}`}>
+                <label>{field.name}</label>
+                {inputField}
+            </div>
+        )
+    }
 
     renderFields() {
+        // Before any fields are added (or before their are retrieved from the API, fields will be an empty array
+        // Show an information message in that case
+        if (this.props.fields.length == 0) {
+            return (<div>No fields defined.</div>);
+        }
+
         let fieldMap = {}
         this.props.fields.forEach((field) => {
             fieldMap[field.id] = this.renderSingleField(field);

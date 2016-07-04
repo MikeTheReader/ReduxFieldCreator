@@ -7,9 +7,11 @@ require('../../node_modules/highlight.js/styles/default.css');
 class StateViewer extends Component {
     render() {
         return (
-            <Highlight>
-                {this.props.state}
-            </Highlight>
+            <div>
+                <Highlight>
+                    {this.props.state}
+                </Highlight>
+            </div>
         );
     }
 }
