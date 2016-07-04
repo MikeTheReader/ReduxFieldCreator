@@ -1,6 +1,6 @@
 {
   "name": "redux-field-creator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A project for learning redux / react while creating a field list creator.",
   "scripts": {
     "build": "webpack --config webpack.config.dev.js --progress --colors",
