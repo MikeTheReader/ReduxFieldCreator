@@ -6,4 +6,5 @@ fields_project/dist
 webpack-stats.json
 webpack-stats-prod.json
 .idea
+db.sqlite3
 
