@@ -22,6 +22,17 @@ export default class SampleForm extends Component {
         });
     }
 
+    createButtonList(field) {
+        return field.options.map((option) => {
+            let classes = 'btn btn-default';
+            if (option == field.default_value) {
+                classes += ' active';
+            }
+
+            return <button type="button" className={classes}>{option}</button>;
+        });
+    }
+
     renderSingleFormField(formField) {
         let field = {};
         _.keys(formField).forEach((key) => {
@@ -50,7 +61,9 @@ export default class SampleForm extends Component {
                                 {...addlProps}/>;
 
         if (field.options && field.options.length > 0) {
-            if (field.allowAdditionalOptions) {
+
+
+            if (field.options.length > 3) {
                 inputField = (
                     <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
                         {this.createOptionList(field)}
@@ -58,9 +71,19 @@ export default class SampleForm extends Component {
                 );
             } else {
                 inputField = (
-                    <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
-                        {this.createOptionList(field)}
-                    </select>
+                    <div>
+                        <div className="btn-group" onClick={
+                            function(reactEvent, something, event) {
+                                let btnGroup = reactEvent.target.parentNode;
+                                btnGroup.childNodes.forEach(function(child) {
+                                    child.classList.remove('active');
+                                });
+                                reactEvent.target.classList.add('active');
+                            }
+                        }>
+                            {this.createButtonList(field)}
+                        </div>
+                    </div>
                 );
             }
         }
@@ -73,8 +96,8 @@ export default class SampleForm extends Component {
             <div className={classes} onClick={() => this.props.selectField(field)}>
                 <button className="btn btn-xs btn-danger pull-right"
                         onClick={() => this.deleteField(field)}>Delete</button>
-                <div className="form-group" key={`input-${field.name}`}>
-                    <label>{field.name}</label>
+                <div className="form-group" key={`input-${field.label}`}>
+                    <label>{field.label}</label>
                     {inputField}
                 </div>
             </div>

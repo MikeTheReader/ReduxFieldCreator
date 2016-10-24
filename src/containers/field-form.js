@@ -16,13 +16,13 @@ const FORM_FIELDS = {
         type: 'hidden',
         defaultVisible: true
     },
-    name: {
-        label: 'Field Name',
+    label: {
+        label: 'Field label',
         type: 'text',
         required: true,
         defaultVisible: true
     },
-    attribute: {
+    name: {
         label: 'Machine Readable Name',
         type: 'text',
         required: true,
@@ -32,6 +32,17 @@ const FORM_FIELDS = {
         label: 'Description',
         type: 'text',
         required: true,
+        defaultVisible: true
+    },
+    instructions: {
+        label: 'Instructions',
+        type: 'text',
+        required: true,
+        defaultVisible: true
+    },
+    required: {
+        label: 'Required',
+        type: 'checkbox',
         defaultVisible: true
     },
     type: {
@@ -64,13 +75,13 @@ const FORM_FIELDS = {
         type: 'checkbox',
         defaultVisible: true
     },
-    low: {
-        label: 'Low Value',
+    min: {
+        label: 'Minimum Value',
         type: 'text',
         defaultVisible: false
     },
-    high: {
-        label: 'High Value',
+    max: {
+        label: 'Maximum Value',
         type: 'text',
         defaultVisible: false
     }
@@ -154,7 +165,7 @@ class FieldForm extends Component {
             default:
                 let type = fieldProperties.type;
 
-                if (reduxField.name === 'high' || reduxField.name === 'low' || reduxField.name === 'default_value') {
+                if (reduxField.name === 'max' || reduxField.name === 'min' || reduxField.name === 'default_value') {
                     type = this.props.fields['type'].value;
                 }
                 return (
@@ -185,11 +196,11 @@ class FieldForm extends Component {
         const {fields, handleSubmit} = this.props;
 
         if (fields.type.value === 'text') {
-            fields.low.turnedOff = true;
-            fields.high.turnedOff = true;
+            fields.min.turnedOff = true;
+            fields.max.turnedOff = true;
         } else {
-            fields.low.turnedOff = false;
-            fields.high.turnedOff = false;
+            fields.min.turnedOff = false;
+            fields.max.turnedOff = false;
         }
 
         if (!this.props.activeField) {

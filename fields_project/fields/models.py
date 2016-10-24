@@ -11,15 +11,17 @@ TYPES = [
 
 
 class Field(models.Model):
+    label = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    attribute = models.CharField(max_length=255)
     description = models.TextField()
+    instructions = models.TextField(null=True, blank=True)
     type = models.CharField(choices=TYPES, default='text', max_length=255)
     allow_additional_options = models.BooleanField(default=False)
     default_value = models.CharField(null=True, max_length=255)
     read_only = models.BooleanField(default=False)
-    low = models.TextField(default=None, null=True, blank=True)
-    high = models.TextField(default=None, null=True, blank=True)
+    required = models.BooleanField(default=True)
+    min = models.TextField(default=None, null=True, blank=True)
+    max = models.TextField(default=None, null=True, blank=True)
 
 
 class FieldOptions(models.Model):

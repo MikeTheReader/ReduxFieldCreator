@@ -6,7 +6,7 @@ export const ADD_NEW_FIELD = 'ADD_NEW_FIELD';
 export const FETCH_FIELDS = 'FETCH_FIELDS';
 export const DELETE_FIELD = 'DELETE_FIELD';
 
-const API_URL = '//localhost:8000/fields/fields';
+const API_URL = '/fields/fields';
 
 /**
  * Any of the actions defined here with an axios request will go through the redux-promise middleware that is
@@ -47,8 +47,8 @@ export function deleteField(field) {
 
 export function addNewField() {
     const dummy_field = {
-        name: '<New Field>',
-        attribute: 'new_field',
+        label: '<New Field>',
+        name: 'new_field',
         description: 'Change this description'
     };
     const request = axios.post(`${API_URL}/`, dummy_field);

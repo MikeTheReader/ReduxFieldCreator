@@ -3,18 +3,18 @@ import { reducer as formReducer } from 'redux-form';
 export default formReducer.normalize({
     // Important that this name (FieldForm) matches the name in the actual container
     FieldForm: {
-        attribute: normalizeAttribute,
+        name: normalizeAttribute,
         type: (value) => value ? value : 'text',
         options: normalizeTags
     }
 });
 
 function normalizeAttribute(value, previousValue, allValues, previousAllValues) {
-    return allValues.name ? calculateAttribute(allValues.name) : '';
+    return allValues.label ? calculateAttribute(allValues.label) : '';
 }
 
-function calculateAttribute(name) {
-    var newName = name.toLowerCase();
+function calculateAttribute(label) {
+    var newName = label.toLowerCase();
     newName = newName.replace(/[^A-Z0-9]/ig, '_');
     return newName.substring(0, 20);
 }
