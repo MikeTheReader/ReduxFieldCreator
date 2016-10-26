@@ -1,6 +1,3 @@
-> **NOTE**: This branch is an experiment with removing the field list, and just using the sample form as the list
-> of fields. Not sure if I like it, so figured I'd make a branch for experimenting.
-
 ## Redux / React Learning Project
 
 This is a project I am using while learning Redux / React. The idea is a form that allows the user to
