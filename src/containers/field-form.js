@@ -51,7 +51,8 @@ const FORM_FIELDS = {
         options: {
             text: 'Text',
             number: 'Number',
-            date: 'Date'
+            date: 'Date',
+            boolean: 'Boolean'
         },
         defaultVisible: true
     },
@@ -168,6 +169,9 @@ class FieldForm extends Component {
                 if (reduxField.name === 'max' || reduxField.name === 'min' || reduxField.name === 'default_value') {
                     type = this.props.fields['type'].value;
                 }
+                if (this.props.fields['type'].value === 'boolean' && reduxField.name === 'default_value') {
+                    type = 'checkbox';
+                }
                 return (
                     <div className={'form-group' + this.additionalClasses(reduxField)} key={reduxField.name}>
                         <label>{fieldProperties.label}</label>
@@ -182,7 +186,6 @@ class FieldForm extends Component {
     }
 
     renderOptions(fieldProperties) {
-
         let fullJSX = [];
         _.forOwn(fieldProperties.options, (value, key) => {
             fullJSX.push(
@@ -195,12 +198,19 @@ class FieldForm extends Component {
     render() {
         const {fields, handleSubmit} = this.props;
 
-        if (fields.type.value === 'text') {
+        fields.options.turnedOff = false;
+        fields.allow_additional_options.turnedOff = false;
+        fields.min.turnedOff = false;
+        fields.max.turnedOff = false;
+
+        if (fields.type.value === 'text' || fields.type.value === 'boolean') {
             fields.min.turnedOff = true;
             fields.max.turnedOff = true;
-        } else {
-            fields.min.turnedOff = false;
-            fields.max.turnedOff = false;
+        }
+
+        if (fields.type.value === 'boolean') {
+            fields.options.turnedOff = true;
+            fields.allow_additional_options.turnedOff = true;
         }
 
         if (!this.props.activeField) {

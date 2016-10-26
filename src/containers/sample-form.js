@@ -3,8 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { selectField, addNewField, fetchFields, deleteField } from '../actions/index'
+import BooleanField from '../components/boolean-field'
+import NumberField from '../components/number-field'
+import TextField from '../components/text-field'
+import DateField from '../components/date-field'
 
-export default class SampleForm extends Component {
+export class SampleForm extends Component {
 
     componentWillMount() {
         this.props.fetchFields();
@@ -16,88 +20,36 @@ export default class SampleForm extends Component {
         });
     }
 
-    createOptionList(field) {
-        return field.options.map((option) => {
-            return <option key={option} selected={option == field.default_value}>{option}</option>;
-        });
-    }
-
-    createButtonList(field) {
-        return field.options.map((option) => {
-            let classes = 'btn btn-default';
-            if (option == field.default_value) {
-                classes += ' active';
-            }
-
-            return <button type="button" className={classes}>{option}</button>;
-        });
-    }
-
-    renderSingleFormField(formField) {
+    renderSingleFormField(formField, index) {
         let field = {};
         _.keys(formField).forEach((key) => {
             if (formField[key]) {
                 field[key] = formField[key].value;
             }
         });
-        return this.renderSingleField(field);
+        return this.renderSingleField(field, index);
     }
 
-    renderSingleField(field) {
+    renderSingleField(field, index) {
+        let typeMap = {
+            boolean: BooleanField,
+            text: TextField,
+            number: NumberField,
+            date: DateField
+        };
 
-        let addlProps = {};
-        if (field.low) {
-            addlProps.min = field.low;
-        }
-        if (field.high) {
-            addlProps.max = field.high;
-        }
-
-        let inputField = <input type={field.type}
-                                readOnly={field.read_only}
-                                defaultValue={field.default_value}
-                                className="form-control"
-                                placeholder={field.description}
-                                {...addlProps}/>;
-
-        if (field.options && field.options.length > 0) {
-
-
-            if (field.options.length > 3) {
-                inputField = (
-                    <select className="form-control" readOnly={field.read_only} disabled={field.read_only}>
-                        {this.createOptionList(field)}
-                    </select>
-                );
-            } else {
-                inputField = (
-                    <div>
-                        <div className="btn-group" onClick={
-                            function(reactEvent, something, event) {
-                                let btnGroup = reactEvent.target.parentNode;
-                                btnGroup.childNodes.forEach(function(child) {
-                                    child.classList.remove('active');
-                                });
-                                reactEvent.target.classList.add('active');
-                            }
-                        }>
-                            {this.createButtonList(field)}
-                        </div>
-                    </div>
-                );
-            }
-        }
+        let FieldObject = typeMap[field.type];
+        let inputField = <FieldObject field={field} />
         let classes = 'field-container';
         if (this.props.activeField && this.props.activeField.id === field.id) {
             classes += ' selected';
         }
         return (
 
-            <div className={classes} onClick={() => this.props.selectField(field)}>
+            <div className={classes} onClick={() => this.props.selectField(field)} key={index}>
                 <button className="btn btn-xs btn-danger pull-right"
                         onClick={() => this.deleteField(field)}>Delete</button>
                 <div className="form-group" key={`input-${field.label}`}>
-                    <label>{field.label}</label>
                     {inputField}
                 </div>
             </div>
@@ -107,18 +59,18 @@ export default class SampleForm extends Component {
     renderFields() {
         // Before any fields are added (or before their are retrieved from the API, fields will be an empty array
         // Show an information message in that case
-        if (this.props.fields.length == 0) {
+        if (!this.props.fields || this.props.fields.length == 0) {
             return (<div>No fields defined.</div>);
         }
 
-        let fieldMap = {}
-        this.props.fields.forEach((field) => {
-            fieldMap[field.id] = this.renderSingleField(field);
+        let fieldMap = {};
+        this.props.fields.forEach((field, index) => {
+            fieldMap[field.id] = this.renderSingleField(field, index);
         });
 
         if (this.props.activeField && this.props.form) {
             let formField = this.props.form.FieldForm;
-            fieldMap[this.props.activeField.id] = this.renderSingleFormField(formField);
+            fieldMap[this.props.activeField.id] = this.renderSingleFormField(formField, this.props.fields.length + 1);
         }
 
         return _.values(fieldMap);

@@ -7,6 +7,7 @@ TYPES = [
     ('text', 'text'),
     ('number', 'number'),
     ('date', 'date'),
+    ('boolean', 'boolean')
 ]
 
 
