@@ -21,5 +21,5 @@ class FieldSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Field
-        fields = ('id', 'name', 'attribute', 'description',
-                  'type', 'allow_additional_options', 'default_value', 'read_only', 'options', 'low', 'high')
+        fields = ('id', 'label', 'name', 'description', 'instructions', 'type', 'allow_additional_options',
+                  'default_value', 'read_only', 'required', 'options', 'min', 'max')
