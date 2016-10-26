@@ -16,13 +16,13 @@ const FORM_FIELDS = {
         type: 'hidden',
         defaultVisible: true
     },
-    name: {
-        label: 'Field Name',
+    label: {
+        label: 'Field label',
         type: 'text',
         required: true,
         defaultVisible: true
     },
-    attribute: {
+    name: {
         label: 'Machine Readable Name',
         type: 'text',
         required: true,
@@ -34,13 +34,25 @@ const FORM_FIELDS = {
         required: true,
         defaultVisible: true
     },
+    instructions: {
+        label: 'Instructions',
+        type: 'text',
+        required: true,
+        defaultVisible: true
+    },
+    required: {
+        label: 'Required',
+        type: 'checkbox',
+        defaultVisible: true
+    },
     type: {
         label: 'Type',
         type: 'select',
         options: {
             text: 'Text',
             number: 'Number',
-            date: 'Date'
+            date: 'Date',
+            boolean: 'Boolean'
         },
         defaultVisible: true
     },
@@ -64,13 +76,13 @@ const FORM_FIELDS = {
         type: 'checkbox',
         defaultVisible: true
     },
-    low: {
-        label: 'Low Value',
+    min: {
+        label: 'Minimum Value',
         type: 'text',
         defaultVisible: false
     },
-    high: {
-        label: 'High Value',
+    max: {
+        label: 'Maximum Value',
         type: 'text',
         defaultVisible: false
     }
@@ -103,7 +115,7 @@ class FieldForm extends Component {
     }
 
     renderFormFields() {
-        let fullJSX = []
+        let fullJSX = [];
         _.forOwn(FORM_FIELDS, (field, key) => {
             let reduxFormField = this.props.fields[key];
             if (!reduxFormField.turnedOff) {
@@ -152,11 +164,19 @@ class FieldForm extends Component {
                     </div>
                 );
             default:
+                let type = fieldProperties.type;
+
+                if (reduxField.name === 'max' || reduxField.name === 'min' || reduxField.name === 'default_value') {
+                    type = this.props.fields['type'].value;
+                }
+                if (this.props.fields['type'].value === 'boolean' && reduxField.name === 'default_value') {
+                    type = 'checkbox';
+                }
                 return (
                     <div className={'form-group' + this.additionalClasses(reduxField)} key={reduxField.name}>
                         <label>{fieldProperties.label}</label>
                         {this.fieldIsInError(reduxField) ? <div className="error-message">{reduxField.error}</div> : ''}
-                        <input type={fieldProperties.type}
+                        <input type={type}
                                className={'form-control'}
                                placeholder={fieldProperties.label}
                             {...reduxField}/>
@@ -166,7 +186,6 @@ class FieldForm extends Component {
     }
 
     renderOptions(fieldProperties) {
-
         let fullJSX = [];
         _.forOwn(fieldProperties.options, (value, key) => {
             fullJSX.push(
@@ -179,12 +198,19 @@ class FieldForm extends Component {
     render() {
         const {fields, handleSubmit} = this.props;
 
-        if (fields.type.value === 'text') {
-            fields.low.turnedOff = true;
-            fields.high.turnedOff = true;
-        } else {
-            fields.low.turnedOff = false;
-            fields.high.turnedOff = false;
+        fields.options.turnedOff = false;
+        fields.allow_additional_options.turnedOff = false;
+        fields.min.turnedOff = false;
+        fields.max.turnedOff = false;
+
+        if (fields.type.value === 'text' || fields.type.value === 'boolean') {
+            fields.min.turnedOff = true;
+            fields.max.turnedOff = true;
+        }
+
+        if (fields.type.value === 'boolean') {
+            fields.options.turnedOff = true;
+            fields.allow_additional_options.turnedOff = true;
         }
 
         if (!this.props.activeField) {

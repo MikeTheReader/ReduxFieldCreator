@@ -53,3 +53,38 @@ pre {
     width: 80px;
 }
 
+.field-container {
+    padding: 5px 10px;
+    margin: 3px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    position: relative;
+}
+
+.field-container:hover {
+    background: #DFF0D8;
+    border-color: #DFF0D8;
+}
+
+.field-container.selected {
+    background: #DFF0D8;
+    border: 2px dotted #337AB7;
+}
+
+.field-container > .btn {
+    display: none;
+
+}
+
+.field-container.selected > .btn {
+    display: block;
+}
+
+.field-container:hover > .btn {
+    display: block;
+}
+
+.add-new-field-button {
+    margin-top: 5px;
+}
+
