@@ -46,12 +46,21 @@ npm install
 
 ## Starting things ups
 
+#### Run migrations
+
+This app uses a sqlite database to store the data. It's preconfigured in settings, but you do have to run the migrations.
+
+```
+cd fields_project
+python manage.py migrate
+```
+
 #### Start Django
 
 To start Django, open a terminal:
 
 ```
-cd field_project
+cd fields_project
 python manage.py runserver
 ```
 

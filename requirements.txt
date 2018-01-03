@@ -1,5 +1,6 @@
 Django==1.9.7
 django-webpack-loader==0.3.0
+django-cors-headers==2.1.0
 djangorestframework==3.3.3
 jsonfield==1.0.3
 Pygments==2.1.3

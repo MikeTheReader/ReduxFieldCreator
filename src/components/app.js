@@ -24,6 +24,14 @@ export default function App() {
                     </div>
                 </div>
             </div>
+            <div className="col-md-4">
+                <div className="panel panel-info">
+                    <div className="panel-heading">CurrentState</div>
+                    <div className="panel-body">
+                        <StateViewer />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
